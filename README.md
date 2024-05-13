@@ -12,6 +12,7 @@ sudo apt-get install libcurl4-openssl-dev libjson-c-dev cmake binutils make
 To build the library run following commands:
 
 ```sh
+git submodule update --init --recursive
 mkdir -p build && cd build
 cmake ../
 make
