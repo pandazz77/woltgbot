@@ -82,7 +82,16 @@ int main(int argc, char *argv[]){
                             if((sock=startupSocket())<0){
                                 exit(EXIT_FAILURE);
                             }
-                            while((currentWOLHeader->mac_addr = nextAddrFromArg(message.text,SIZE_OF_ARRAY(message.text)))!=NULL){
+                            char *macAddrs[12];
+                            unsigned int macCount = 0;
+                            char *pt;
+                            pt = strtok(message.text," ");
+                            while(pt!=NULL){
+                                macAddrs[macCount++] = pt;
+                                pt = strtok(NULL," ");
+                            }
+                            while((currentWOLHeader->mac_addr = nextAddrFromArg(macAddrs,macCount))!=NULL){
+                                puts(currentWOLHeader->mac_addr->mac_addr_str);
                                 if(sendWOL(currentWOLHeader,sock)<0){
                                     snprintf(str,SIZE_OF_ARRAY(str),"Error occured during sending the WOL magic packet for mac address: %s ...!\n", currentWOLHeader->mac_addr->mac_addr_str );
                                     fprintf(stderr,str);
